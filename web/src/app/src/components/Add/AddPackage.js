@@ -26,7 +26,7 @@ export default function AddPackage() {
             const response = await axios.post('http://localhost:8081/api/v1/inventory/package/create', jsonData);
             console.log(response.data);
             if (response.status === 200) {
-                alert("Added package to VM: " + data["packagename"]);
+                alert("Added package");
             }
         } catch (error) {
             console.error(error);
@@ -85,7 +85,7 @@ export default function AddPackage() {
                     <br></br>
                 </div>
 
-                <FormButton primary fluid width={2} type='submit'>Create Vulnerability</FormButton>
+                <FormButton primary fluid width={2} type='submit'>Create Package</FormButton>
             </Form >
         </Segment >
     );

@@ -49,7 +49,7 @@ export default function AddVM() {
                 <FormField width={formFieldWidth} required={true}>
                     <label>Region</label>
                     <input
-                        placeholder="region"
+                        placeholder="US-East | US-West | APAC-India"
                         type='text'
                         {...register("region", { required: true })}
                     />
@@ -59,7 +59,7 @@ export default function AddVM() {
                 <FormField width={formFieldWidth} required={true}>
                     <label>Datacenter</label>
                     <input
-                        placeholder="datacenter"
+                        placeholder="NA | EU | APAC"
                         type='text'
                         {...register("datacenter", { required: true })}
                     />
@@ -69,7 +69,7 @@ export default function AddVM() {
                 <FormField width={formFieldWidth} required={true}>
                     <label>OS</label>
                     <input
-                        placeholder="Ubuntu"
+                        placeholder="Ubuntu | Windows"
                         type='text'
                         {...register("os", { required: true })}
                     />
@@ -79,7 +79,7 @@ export default function AddVM() {
                 <FormField width={formFieldWidth} required={true}>
                     <label>Environment</label>
                     <input
-                        placeholder="Production"
+                        placeholder="PROD | UAT | STAG | TEST"
                         type='text'
                         {...register("environment", { required: true })}
                     />
@@ -89,11 +89,11 @@ export default function AddVM() {
                 <FormField width={formFieldWidth} required={true}>
                     <label>Owners</label>
                     <input
-                        placeholder="user1@gmail.com,user2@gmail.com"
+                        placeholder="user1@gmail.com"
                         type='text'
-                        {...register("owners", { required: true, pattern: /\w+@gmail\.com(,*\s*\w+@gmail\.com)*/ })}
+                        {...register("owners", { required: true, pattern: /\w+@gmail\.com*/ })}
                     />
-                    {errors.owners && <p className="ui negative mini message">owners required and separated by comma with no spaces in between</p>}
+                    {errors.owners && <p className="ui negative mini message">owners required</p>}
                 </FormField>
 
                 <FormField width={formFieldWidth} required={false}>

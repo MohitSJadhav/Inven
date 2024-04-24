@@ -14,6 +14,8 @@ import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import { InputAdornment, IconButton } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import CryptoJS from 'crypto-js';
+// https://stackblitz.com/edit/cryptojs-aes-encrypt-decrypt-mosqnf?file=index.js
 
 const defaultTheme = createTheme();
 
@@ -48,7 +50,7 @@ export default function SignIn() {
                 console.log(queryresponse.data[0]);
                 console.log(email);
                 console.log(password);
-                if (new String(queryresponse.data[0].email).valueOf() === new String(email).valueOf() && new String(queryresponse.data[0].password).valueOf() === new String(password).valueOf() && new String(queryresponse.data[0].status).valueOf() === new String("active").valueOf()) {
+                if (new String(queryresponse.data[0].email).valueOf() === new String(email).valueOf() && new String((CryptoJS.AES.decrypt(queryresponse.data[0].password, 'secret_key_here_lol').toString(CryptoJS.enc.Utf8))).valueOf() === new String(password).valueOf() && new String(queryresponse.data[0].status).valueOf() === new String("active").valueOf()) {
                     sessionStorage.setItem('isLoggedIn', true);
                     console.log("set  the fields");
                     if (queryresponse.data[0].groupname === "admin") {

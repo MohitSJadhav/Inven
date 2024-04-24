@@ -140,9 +140,9 @@ export default function UpdateException() {
                 <FormField width={formFieldWidth} required={true}>
                     <label>Approvers</label>
                     <input
-                        placeholder="DL-LXSRE@tesla.com,DL-LXSRE@tesla.com"
+                        placeholder="user@gmail.com"
                         type='text'
-                        {...register("approved_by", { required: true, pattern: /\w+@tesla\.com(,*\s*\w+@tesla\.com)*/ })}
+                        {...register("approved_by", { required: true, pattern: /\w+@gmail\.com*/ })}
                     />
                     {errors.approved_by && <p className="ui negative mini message">approvers required and separated by comma with no spaces in between</p>}
                 </FormField>

@@ -38,7 +38,7 @@ export default function AddCpu() {
             response = await axios.post('http://localhost:8081/api/v1/inventory/cpudiskmem/create', jsonData);
             console.log(response.data);
             if (response.status === 200) {
-                alert("Added resources to Inventory for host with id: " + data["hostid"]);
+                alert("Added resources to Inventory for host ");
             }
         } catch (error) {
             if (error.response.status === 400) {
@@ -177,7 +177,7 @@ export default function AddCpu() {
                     <br></br>
                 </div>
 
-                <FormButton primary fluid width={2} type='submit'>Create Vulnerability</FormButton>
+                <FormButton primary fluid width={2} type='submit'>Add Resources</FormButton>
             </Form >
         </Segment >
     );

@@ -109,7 +109,7 @@ export default function UpdatePackage() {
                         onChange={handleSearchValue}
                     />
                 </FormField>
-                <FormButton primary fluid width={2} type='submit' name="button">Search Vulnerability</FormButton>
+                <FormButton primary fluid width={2} type='submit' name="button">Search Package</FormButton>
             </Form>
         </Segment>
         <Segment padded="very">
@@ -121,7 +121,7 @@ export default function UpdatePackage() {
                         type='text'
                         {...register("packagename", { required: true })}
                     />
-                    {errors.packagename && <p className="ui negative mini message">Vulnerability Name required</p>}
+                    {errors.packagename && <p className="ui negative mini message">Package Name required</p>}
                 </FormField>
 
                 <FormField width={formFieldWidth} required={true}>

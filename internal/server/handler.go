@@ -76,8 +76,6 @@ func GetVmDataFromInventory(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 
 	response := model.HostData{}
-	networkConfig := []model.NetworkConfig{}
-	cpuMem := []model.CpuDiskMem{}
 	vulArray := []model.DbVulnerability{}
 	packageArray := []model.Package{}
 	log.Println("Executing host")
@@ -115,7 +113,6 @@ func GetVmDataFromInventory(w http.ResponseWriter, r *http.Request) {
 	response.HostData = hosts[0]
 
 	log.Println("Done host")
-
 	query = "SELECT * FROM inventory.networkconfig where networkconfig.hostid=? limit 50"
 	rows, err = dBConn.Query(query, hostname)
 	if err != nil {
@@ -135,11 +132,13 @@ func GetVmDataFromInventory(w http.ResponseWriter, r *http.Request) {
 	if len(dbNetwork) != 0 {
 
 		// Loop through rows, using Scan to assign column data to struct fields.
-		var networkConfigArray []model.NetworkConfig
-		for i := 0; i < len(dbNetwork); i++ {
-			networkConfig = append(networkConfig, networkConfigArray[i])
-		}
-		response.NetworkData = networkConfigArray[0]
+		// var networkConfigArray []model.NetworkConfig
+		// for i := 0; i < len(dbNetwork); i++ {
+		// 	networkConfig = append(networkConfig, dbNetwork[i])
+		// }
+		response.NetworkData = dbNetwork[0]
+	} else {
+		response.NetworkData = model.NetworkConfig{}
 	}
 
 	log.Println("Done netowrk")
@@ -165,12 +164,14 @@ func GetVmDataFromInventory(w http.ResponseWriter, r *http.Request) {
 	if len(dbCpu) != 0 {
 
 		// Loop through rows, using Scan to assign column data to struct fields.
-		var cpuConfigArray []model.CpuDiskMem
-		for i := 0; i < len(dbCpu); i++ {
-			cpuMem = append(cpuMem, cpuConfigArray[i])
-		}
-		response.CpuDiskMemData = cpuConfigArray[0]
+
+		// for i := 0; i < len(dbCpu); i++ {
+		// 	cpuMem = append(cpuMem, dbCpu[i])
+		// }
+		response.CpuDiskMemData = dbCpu[0]
 		log.Println("Done cpu")
+	} else {
+		response.PackageData = packageArray
 	}
 
 	// PACKAGE
@@ -195,11 +196,13 @@ func GetVmDataFromInventory(w http.ResponseWriter, r *http.Request) {
 
 		// Loop through rows, using Scan to assign column data to struct fields.
 		// var packagearray []model.Package
-		for i := 0; i < len(dbPackage); i++ {
-			packageArray = append(packageArray, dbPackage[i])
-		}
-		response.PackageData = packageArray
+		// for i := 0; i < len(dbPackage); i++ {
+		// 	packageArray = append(packageArray, dbPackage[i])
+		// }
+		response.PackageData = dbPackage
 
+	} else {
+		response.PackageData = packageArray
 	}
 	log.Println("Done package")
 	// Vulnerability
@@ -224,9 +227,11 @@ func GetVmDataFromInventory(w http.ResponseWriter, r *http.Request) {
 
 		// Loop through rows, using Scan to assign column data to struct fields.
 		// var vularray []model.Vulnerability
-		for i := 0; i < len(dbVul); i++ {
-			vulArray = append(vulArray, dbVul[i])
-		}
+		// for i := 0; i < len(dbVul); i++ {
+		// 	vulArray = append(vulArray, dbVul[i])
+		// }
+		response.VulnerabilityData = dbVul
+	} else {
 		response.VulnerabilityData = vulArray
 	}
 
@@ -395,7 +400,8 @@ func RemoveVmFromInventory(w http.ResponseWriter, r *http.Request) {
 
 	dbConn := database.GetDBConnection()
 
-	stmt, err := dbConn.Prepare("DELETE FROM inventory.server where server.hostid=?")
+	// Server Package
+	stmt, err := dbConn.Prepare("DELETE FROM inventory.serverpackage where serverpackage.hostid=?")
 	if err != nil {
 		SetHostResponse(w, r, &response, http.StatusInternalServerError, http.StatusInternalServerError, "unable to perform request for VM", "internal server error with db")
 		printHostResponse(fmt.Sprintf("error '%s' occured for VM: '%s'", err.Error(), vmid), w, &response)
@@ -409,11 +415,72 @@ func RemoveVmFromInventory(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// Server Vul
+
+	stmt, err = dbConn.Prepare("DELETE FROM inventory.servervulnerability where servervulnerability.hostid=?")
+	if err != nil {
+		SetHostResponse(w, r, &response, http.StatusInternalServerError, http.StatusInternalServerError, "unable to perform request for VM", "internal server error with db")
+		printHostResponse(fmt.Sprintf("error '%s' occured for VM: '%s'", err.Error(), vmid), w, &response)
+		return
+	}
+
+	_, err = stmt.Exec(vmid)
+	if err != nil {
+		SetHostResponse(w, r, &response, http.StatusInternalServerError, http.StatusInternalServerError, "unable to perform request for VM", "internal server error with db")
+		printHostResponse(fmt.Sprintf("error '%s' occured for VM: '%s'", err.Error(), vmid), w, &response)
+		return
+	}
+
+	// network config
+
+	stmt, err = dbConn.Prepare("DELETE FROM inventory.networkconfig where networkconfig.hostid=?")
+	if err != nil {
+		SetHostResponse(w, r, &response, http.StatusInternalServerError, http.StatusInternalServerError, "unable to perform request for VM", "internal server error with db")
+		printHostResponse(fmt.Sprintf("error '%s' occured for VM: '%s'", err.Error(), vmid), w, &response)
+		return
+	}
+
+	_, err = stmt.Exec(vmid)
+	if err != nil {
+		SetHostResponse(w, r, &response, http.StatusInternalServerError, http.StatusInternalServerError, "unable to perform request for VM", "internal server error with db")
+		printHostResponse(fmt.Sprintf("error '%s' occured for VM: '%s'", err.Error(), vmid), w, &response)
+		return
+	}
+
+	stmt, err = dbConn.Prepare("DELETE FROM inventory.cpudiskmem where cpudiskmem.hostid=?")
+	if err != nil {
+		SetHostResponse(w, r, &response, http.StatusInternalServerError, http.StatusInternalServerError, "unable to perform request for VM", "internal server error with db")
+		printHostResponse(fmt.Sprintf("error '%s' occured for VM: '%s'", err.Error(), vmid), w, &response)
+		return
+	}
+
+	_, err = stmt.Exec(vmid)
+	if err != nil {
+		SetHostResponse(w, r, &response, http.StatusInternalServerError, http.StatusInternalServerError, "unable to perform request for VM", "internal server error with db")
+		printHostResponse(fmt.Sprintf("error '%s' occured for VM: '%s'", err.Error(), vmid), w, &response)
+		return
+	}
+
+	stmt, err = dbConn.Prepare("DELETE FROM inventory.server where server.hostid=?")
+	if err != nil {
+		SetHostResponse(w, r, &response, http.StatusInternalServerError, http.StatusInternalServerError, "unable to perform request for VM", "internal server error with db")
+		printHostResponse(fmt.Sprintf("error '%s' occured for VM: '%s'", err.Error(), vmid), w, &response)
+		return
+	}
+
+	result, err = stmt.Exec(vmid)
+	if err != nil {
+		SetHostResponse(w, r, &response, http.StatusInternalServerError, http.StatusInternalServerError, "unable to perform request for VM", "internal server error with db")
+		printHostResponse(fmt.Sprintf("error '%s' occured for VM: '%s'", err.Error(), vmid), w, &response)
+		return
+	}
+
 	if rowAffected, err := result.RowsAffected(); rowAffected == 0 {
 		SetHostResponse(w, r, &response, http.StatusInternalServerError, http.StatusInternalServerError, fmt.Sprintf("unable to delete VM: '%s'", vmid), "internal server error with db")
 		printHostResponse(fmt.Sprintf("error '%s' occured for VM: '%s'", err.Error(), vmid), w, &response)
 		return
 	}
+
 	SetHostResponse(w, r, &response, http.StatusOK, http.StatusOK, fmt.Sprintf("deleted VM: '%s' ", vmid), "deleted VM sucessfully")
 	printHostResponse(fmt.Sprintf("deleted VM: '%s'", vmid), w, &response)
 }
@@ -1488,7 +1555,7 @@ func AddUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	stmt, err := dBConn.Prepare("INSERT INTO inventory.user(username, email,password groupname, updatedate, status) VALUES(?,?,?,?,?)")
+	stmt, err := dBConn.Prepare("INSERT INTO inventory.user(username, email,password, groupname, updatedate, status) VALUES(?,?,?,?,?,?)")
 	if err != nil {
 		SetVulResponse(w, r, http.StatusInternalServerError)
 		printUserResponse(fmt.Sprintf("database prepared query error '%s' for request for user with email '%s'", err.Error(), requestServerData.Email), w, &response)

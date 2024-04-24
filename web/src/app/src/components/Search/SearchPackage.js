@@ -78,7 +78,7 @@ export default function SearchPackage() {
                 <br />
                 <FormField width={5} required={true}>
                     <input
-                        placeholder="Enter value..."
+                        placeholder="Enter Packagename"
                         type='text'
                         id="package"
                         value={searchValue}

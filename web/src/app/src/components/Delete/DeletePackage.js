@@ -47,7 +47,7 @@ export default function DeletePackage() {
                             onChange={handleTextChange}
                         />
                     </FormField>
-                    <FormButton primary type="submit" name="button">Delete Vulnerability</FormButton>
+                    <FormButton primary type="submit" name="button">Delete Package</FormButton>
                 </Form>
             </Segment>
 

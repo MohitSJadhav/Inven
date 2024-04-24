@@ -31,7 +31,7 @@ const MainContent = () => {
             element={<VM />
             }
           ></Route>}
-          {isLoggedIn && <Route
+          {isAdmin && isLoggedIn && <Route
             path="/network"
             element={<NetworkConfig />
             }

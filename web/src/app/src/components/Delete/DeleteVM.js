@@ -29,11 +29,9 @@ export default function DeleteVM() {
             const queryresponse = await axios.delete(`http://localhost:8081/api/v1/inventory/vm/remove?vmid=${deleteValue}`);
             console.log(JSON.stringify(queryresponse))
             if (queryresponse.status === 200) {
-                // alert(deleteValue + " deleted sucessfully!");
                 setExceptionDeletedValue(true)
             }
         } catch (error) {
-            // alert(deleteValue + " not found");
             setExceptionDeletedValue(false);
         }
         setRenderErrorValue(true);
