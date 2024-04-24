@@ -1,0 +1,18 @@
+.headline {
+
+    margin: auto;
+    color: rgb(201, 70, 70);
+    background-color: rgb(151, 8, 8);
+    /* text-transform: uppercase; */
+    /* --font-extra-light: "Gotham Extra Light" */
+    font-family: 'Gotham Light';
+    /* background-color: rgba(228, 30, 0.7, 0.748); */
+
+}
+
+.div-signout {
+    width: "100px";
+    height: "100px";
+    display: "flex";
+    margin: auto;
+}

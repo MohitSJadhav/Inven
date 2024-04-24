@@ -1,0 +1,12 @@
+.headline {
+
+    margin: auto;
+    margin-right: 5px;
+    margin-left: 5px;
+    color: rgb(253, 253, 253);
+    background-color: rgb(151, 8, 8);
+    /* text-transform: uppercase; */
+    /* --font-extra-light: "Gotham Extra Light" */
+    font-family: 'Gotham Light';
+    /* background-color: rgba(228, 30, 0.7, 0.748); */
+}

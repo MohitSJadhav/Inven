@@ -1,0 +1,106 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
+
+body {
+    font-family: 'Gotham';
+    background-color: #f4f4f4;
+}
+
+.login-page {
+    width: 360px;
+    padding: 80px 0;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: #fffdfd;
+    box-shadow: 0px 0px 35px 0px rgba(154, 160, 185, .15);
+}
+
+h2 {
+    margin: 5;
+    color: #333;
+}
+
+.form-group {
+    margin-bottom: 10px;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    color: #777;
+}
+
+input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    font-size: 14px;
+    color: #777;
+}
+
+input:focus {
+    border-color: #333;
+    outline: none;
+}
+
+.error {
+    color: #ff4d4d;
+    margin-bottom: 15px;
+}
+
+.success {
+    color: #4dff7f;
+    margin-bottom: 15px;
+}
+
+.button {
+    background-color: #247f27;
+    /* Green */
+    border: none;
+    color: white;
+    padding: 5px 8cqi;
+    margin-left: 5px;
+    margin-right: 5px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-flexbox;
+    font-size: 15px;
+
+    margin: 4px 4px;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+/* Button styling when the user hovers over the button */
+.button:hover {
+    background-color: #115014;
+}
+
+/* Additional styling for the primary button */
+.button.primary {
+    background-color: #008CBA;
+    /* Blue */
+}
+
+/* Button styling when the user hovers over the primary button */
+.button.primary:hover {
+    background-color: #0079a0;
+}
+
+/* Additional styling for the secondary button */
+.button.secondary {
+    background-color: #f44336;
+    /* Red */
+}
+
+/* Button styling when the user hovers over the secondary button */
+.button.secondary:hover {
+    background-color: #da2e2d;
+}
+
+button:hover {
+    background-color: #524343;
+}
